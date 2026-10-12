@@ -1,0 +1,58 @@
+# ── Dependencies ──
+node_modules/
+.pnp
+.pnp.js
+
+# ── Environment files (NEVER commit secrets) ──
+.env
+.env.*
+!.env.example
+
+# ── Next.js / build output ──
+.next/
+out/
+dist/
+build/
+next-env.d.ts
+*.tsbuildinfo
+
+# ── Database files / local data ──
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+prisma/*.db
+prisma/*.sqlite*
+
+# ── Logs ──
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.pid
+
+# ── Runtime / uploads (media lives in object storage in production) ──
+uploads/*
+!uploads/.gitkeep
+.tmp/
+tmp/
+temp/
+.cache/
+
+# ── OS / editor junk ──
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*~
+
+# ── Test / coverage artifacts ──
+coverage/
+.nyc_output/
+
+# test artifacts (generated)
+test-results/

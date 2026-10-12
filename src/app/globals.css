@@ -1,0 +1,303 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────
+   LINKUPCHAT design tokens
+   Light and dark themes are designed intentionally — the dark
+   theme is not an inversion of the light theme.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --c-bg: 246 247 251; /* #F6F7FB */
+  --c-surface: 255 255 255;
+  --c-elevated: 255 255 255;
+  --c-border: 232 234 242;
+  --c-border-strong: 214 217 231;
+  --c-ink: 23 26 43; /* #171A2B */
+  --c-muted: 110 113 145;
+  --c-faint: 158 162 188;
+  --c-bubble-in: 255 255 255;
+  --c-bubble-out: 109 94 245;
+  --brand-grad: linear-gradient(135deg, #6d5ef5 0%, #22b8ff 100%);
+  --brand-grad-warm: linear-gradient(135deg, #6d5ef5 0%, #ff6b5e 100%);
+  --bubble-out-grad: linear-gradient(135deg, #7357ff 0%, #4b8cf7 100%);
+  --chat-wallpaper: radial-gradient(circle at 12% 18%, rgb(109 94 245 / 0.05) 0, transparent 42%),
+    radial-gradient(circle at 88% 82%, rgb(34 184 255 / 0.06) 0, transparent 46%),
+    linear-gradient(180deg, #f2f4fb 0%, #eef1f9 100%);
+  --shadow-out: 0 1px 2px rgb(30 25 90 / 0.12);
+  color-scheme: light;
+}
+
+.dark {
+  --c-bg: 12 14 26; /* #0C0E1A */
+  --c-surface: 20 23 39; /* #141727 */
+  --c-elevated: 27 31 51; /* #1B1F33 */
+  --c-border: 38 43 69;
+  --c-border-strong: 52 58 92;
+  --c-ink: 236 238 251;
+  --c-muted: 149 153 184;
+  --c-faint: 104 109 148;
+  --c-bubble-in: 27 31 51;
+  --c-bubble-out: 109 94 245;
+  --chat-wallpaper: radial-gradient(circle at 12% 18%, rgb(109 94 245 / 0.1) 0, transparent 42%),
+    radial-gradient(circle at 88% 82%, rgb(34 184 255 / 0.08) 0, transparent 46%),
+    linear-gradient(180deg, #0c0e1a 0%, #0e1122 100%);
+  --shadow-out: 0 1px 2px rgb(0 0 0 / 0.35);
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: rgb(var(--c-border));
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    z-index: 300;
+    transform: translateY(-160%);
+    border-radius: 999px;
+    background: #6d5ef5;
+    color: #fff;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+  .skip-link:focus {
+    transform: none;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg text-ink antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    overscroll-behavior-y: none;
+  }
+
+  ::selection {
+    background: rgb(109 94 245 / 0.22);
+  }
+
+  /* Accessible focus states */
+  :focus-visible {
+    outline: 2px solid #6d5ef5;
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* Scrollbars */
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--c-border-strong)) transparent;
+  }
+  .scroll-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background: rgb(var(--c-border-strong));
+    border-radius: 99px;
+  }
+  .scroll-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Reduced motion preference (Section 32) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Brand gradient text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--brand-grad);
+  }
+  .bg-brand-gradient {
+    background-image: var(--brand-grad);
+  }
+  .bg-brand-gradient-warm {
+    background-image: var(--brand-grad-warm);
+  }
+  .bg-bubble-out {
+    background-image: var(--bubble-out-grad);
+    box-shadow: var(--shadow-out);
+  }
+
+  /* Chat wallpaper */
+  .chat-wallpaper {
+    background-image: var(--chat-wallpaper);
+    background-attachment: local;
+  }
+
+  /* Glass surfaces */
+  .glass {
+    @apply border border-white/40 bg-white/70 backdrop-blur-xl;
+  }
+  .dark .glass {
+    @apply border-white/[0.06] bg-elevated/70;
+  }
+
+  /* Message bubble tails */
+  .bubble-tail-out::before {
+    content: '';
+    position: absolute;
+    right: -7px;
+    top: 0;
+    width: 12px;
+    height: 13px;
+    background: #5f4df0;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    border-top-right-radius: 4px;
+  }
+  .bubble-tail-in::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 0;
+    width: 12px;
+    height: 13px;
+    background: rgb(var(--c-bubble-in));
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    border-top-left-radius: 4px;
+    box-shadow: -1px 0 0 rgb(var(--c-border));
+  }
+
+  /* Skeleton shimmer */
+  .skeleton {
+    @apply relative overflow-hidden bg-border/70;
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(var(--c-surface) / 0.55),
+      transparent
+    );
+    animation: shimmer 1.8s linear infinite;
+  }
+
+  /* Presence ring for status stories */
+  .story-ring {
+    background-image: var(--brand-grad);
+  }
+  .story-ring-viewed {
+    background: rgb(var(--c-border-strong));
+  }
+  @keyframes status-fill {
+    from { width: 0%; }
+    to { width: 100%; }
+  }
+  .status-fill {
+    width: 0%;
+    animation-name: status-fill;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+
+  /* Icon button base */
+  .icon-btn {
+    @apply inline-flex h-10 w-10 items-center justify-center rounded-full text-muted transition-colors hover:bg-ink/[0.06] hover:text-ink disabled:pointer-events-none disabled:opacity-40;
+  }
+  .dark .icon-btn:hover {
+    @apply bg-white/[0.08];
+  }
+
+  .card {
+    @apply rounded-2xl border border-border bg-surface shadow-soft;
+  }
+
+  .input-base {
+    @apply w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-[15px] text-ink placeholder:text-faint transition-shadow focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/25;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow-soft transition-all hover:bg-brand-600 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-ink transition-all hover:bg-ink/[0.04] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
+  }
+  .dark .btn-secondary:hover {
+    @apply bg-white/[0.06];
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-coral-500 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-coral-600 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  /* Safe areas for mobile bottom nav */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .h-nav {
+    height: calc(env(safe-area-inset-bottom, 0px) + 4rem);
+  }
+
+  /* Fixed colors so dark mode does not invert the banner into white-on-white. */
+  .status-banner {
+    background: #171a2b;
+    color: #f6f7fb;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .drag-none {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+}
+
+/* Phase 18 — mobile keyboard, tap delay, and iOS input zoom.
+   Utilities above stay in their layer; these rules win on purpose. */
+.app-shell {
+  height: calc(100dvh - var(--keyboard-inset, 0px));
+}
+html[data-keyboard='open'] .app-main {
+  padding-bottom: 0;
+}
+html[data-keyboard='open'] .h-nav {
+  display: none;
+}
+html[data-keyboard='open'] .composer-dock {
+  padding-bottom: 0.5rem;
+}
+html[data-keyboard='open'] .toast-dock {
+  bottom: calc(var(--keyboard-inset, 0px) + 0.75rem);
+}
+button,
+a,
+[role='button'],
+summary {
+  touch-action: manipulation;
+}
+@media (max-width: 767px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
